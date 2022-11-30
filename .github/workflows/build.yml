@@ -2,12 +2,8 @@ name: Package
 
 on:
   push:
-    branches:
-      - master
     tags:
       - '*'
-    paths-ignore:
-      - '.github/**'
 
 env:
   GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
