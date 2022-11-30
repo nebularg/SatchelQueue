@@ -19,18 +19,9 @@ local defaults = {
 	}
 }
 
-local SATCHEL_ID = 122607
 local SATCHELQUEUE = "SatchelQueue"
 local BUTTON_CANCEL = "Stop Looking"
 local TIME_WAITING = "Time Waiting: %s"
-
--- GLOBALS: LibStub UIParent EquipmentFlyoutFrame AuctionFrame QueueStatusFrame MailFrame GameTooltip QueueStatusButton
--- GLOBALS: LFDQueueFrameRoleButtonDPS LFDQueueFrameRoleButtonHealer LFDQueueFrameRoleButtonTank
--- GLOBALS: UIDropDownMenu_CreateInfo UIDropDownMenu_AddButton InterfaceOptionsFrame_OpenToCategory C_PetBattles C_Timer
--- GLOBALS: LFDQueueFrame_GetRoles StaticPopup_Show StaticPopup_Hide StaticPopup_Visible
--- GLOBALS: NUM_LE_LFG_CATEGORYS MAX_WORLD_PVP_QUEUES LFG_SUBTYPEID_RAID LE_LFG_CATEGORY_LFD NUM_BAG_SLOTS LOOT_SLOT_MONEY LFD_NUM_ROLES
--- GLOBALS: LESS_THAN_ONE_MINUTE LEAVE_QUEUE SETTINGS LFD_STATISTIC_CHANGE_TIME LFG_ROLE_SHORTAGE_RARE LFG_CALL_TO_ARMS
--- GLOBALS: SlashCmdList SLASH_SATCHELQUEUE1 SLASH_SATCHELQUEUE2 SLASH_SATCHELQUEUE3 SLASH_SATCHELQUEUE4
 
 StaticPopupDialogs["SATCHEL_QUEUE"] = {
 	text = LFG_CALL_TO_ARMS,
@@ -192,7 +183,6 @@ jackieFrame:SetScript("OnEnter", function()
 		end
 	end
 
-	--local mode = GetLFGMode(LE_LFG_CATEGORY_LFD)
 	statusFrame:ClearAllPoints()
 	if showMinimapButton then
 		statusFrame:SetPoint("BOTTOM", QueueStatusFrame, "TOP")
