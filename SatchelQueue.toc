@@ -1,0 +1,11 @@
+## Interface: 100000
+## Title: Satchel Queue |cffffffff(Jackie Edition)|r
+## Notes: Queue for Satchels!
+## Author: Frunk
+## Version: 0.3.0
+## OptionalDeps: Ace3, LibSharedMedia-3.0, LibDDI-1.0
+## SavedVariables: SatchelQueueDB
+
+embeds.xml
+
+SatchelQueue.lua
