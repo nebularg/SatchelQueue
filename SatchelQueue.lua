@@ -402,6 +402,13 @@ do
 
 		ResetSound()
 
+		local leveling = false
+		local level = UnitLevel("player")
+		local maxLevel = GetMaxLevelForPlayerExpansion()
+		if level and maxLevel then
+			leveling = level < maxLevel
+		end
+
 		for i=1, NUM_LE_LFG_CATEGORYS do
 			local mode = GetLFGMode(i)
 			if i == LE_LFG_CATEGORY_LFD then
@@ -412,7 +419,7 @@ do
 
 					for i = GetNumRandomDungeons(), 1, -1 do
 						local id, name, _, diff = GetLFGRandomDungeonInfo(i)
-						if IsLFGDungeonJoinable(id) and diff == 2 and CheckQueueReward(id) then
+						if IsLFGDungeonJoinable(id) and (diff == 2 or (leveling and diff == 1)) and CheckQueueReward(id) then
 							if not StaticPopup_Visible("SATCHEL_QUEUE") then
 								StaticPopup_Show("SATCHEL_QUEUE", ("\n" .. name), nil, id)
 							end
