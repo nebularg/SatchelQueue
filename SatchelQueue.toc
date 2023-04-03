@@ -1,4 +1,4 @@
-## Interface: 100002
+## Interface: 100007
 ## Title: Satchel Queue |cffffffff(Jackie Edition)|r
 ## Notes: Queue for Satchels!
 ## Author: Frunk
