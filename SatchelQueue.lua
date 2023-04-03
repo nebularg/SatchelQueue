@@ -16,6 +16,7 @@ local defaults = {
 		sound_enable = true,
 		sound_force = false,
 		sound_file = "SatchelQueue Alert",
+		specific_queue = false,
 	}
 }
 
@@ -360,6 +361,7 @@ do
 	end
 
 	local function CheckQueueReward(dungeonID)
+		if db.specific_queue and db.specific_queue ~= dungeonID then return end
 		local leaderChecked, tankChecked, healerChecked, damageChecked = LFDQueueFrame_GetRoles()
 		local eligible, forTank, forHealer, forDamage, itemCount = GetLFGRoleShortageRewards(dungeonID, LFG_ROLE_SHORTAGE_RARE)
 		return eligible and itemCount > 0 and ((tankChecked and forTank) or (healerChecked and forHealer) or (damageChecked and forDamage))
@@ -436,6 +438,11 @@ end --do
 
 -- Options
 local function GetOptions()
+	local dungeons = { [false] = "All" }
+	for i = 1, GetNumRandomDungeons() do
+		local id, name = GetLFGRandomDungeonInfo(i)
+		dungeons[id] = name
+	end
 	local sounds = media and media:List("sound") or { "SatchelQueue Alert" }
 	local options = {
 		name = "SatchelQueue",
@@ -443,6 +450,14 @@ local function GetOptions()
 		set = function(info, val) db[info[#info]] = val end,
 		get = function(info) return db[info[#info]] end,
 		args = {
+			specific_queue = {
+				type = "select",
+				name = "Dungeons",
+				desc = "Only queue for dungeons in this category.",
+				values = dungeons,
+				width = "double",
+				order = 0.5,
+			},
 			icon = {
 				type = "toggle",
 				name = "Enable status icon",
