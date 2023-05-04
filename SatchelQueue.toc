@@ -1,7 +1,7 @@
-## Interface: 100007
+## Interface: 100100
 ## Title: Satchel Queue |cffffffff(Jackie Edition)|r
 ## Notes: Queue for Satchels!
-## Author: Frunk
+## Author: Frunk, Neb
 ## Version: @project-version@
 ## OptionalDeps: Ace3, LibSharedMedia-3.0, LibDDI-1.0
 ## SavedVariables: SatchelQueueDB
