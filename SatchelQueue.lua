@@ -10,7 +10,8 @@ local defaults = {
 		sound_enable = true,
 		sound_force = false,
 		sound_file = "SatchelQueue Alert",
-		specific_queue = false,
+		any_queue = true,
+		specific_dungeons = {},
 	}
 }
 
@@ -361,7 +362,7 @@ do
 	end
 
 	local function CheckQueueReward(dungeonID)
-		if db.specific_queue and db.specific_queue ~= dungeonID then return end
+		if not db.any_queue and not db.specific_dungeon[dungeonID] then return end
 		local leaderChecked, tankChecked, healerChecked, damageChecked = LFDQueueFrame_GetRoles()
 		local eligible, forTank, forHealer, forDamage, itemCount = GetLFGRoleShortageRewards(dungeonID, LFG_ROLE_SHORTAGE_RARE)
 		return eligible and itemCount > 0 and ((tankChecked and forTank) or (healerChecked and forHealer) or (damageChecked and forDamage))
@@ -438,9 +439,13 @@ end --do
 
 -- Options
 local function GetOptions()
-	local dungeons = { [false] = "All" }
+	local dungeons = {}
 	for i = 1, GetNumRandomDungeons() do
 		local id, name = GetLFGRandomDungeonInfo(i)
+		local isAvailableForAll, isAvailableForPlayer, hideIfNotJoinable = IsLFGDungeonJoinable(id)
+		if isAvailableForPlayer or isAvailableForPlayer then
+			name = GREEN_FONT_COLOR:WrapTextInColorCode(name)
+		end
 		dungeons[id] = name
 	end
 	local sounds = media and media:List("sound") or { "SatchelQueue Alert" }
@@ -450,14 +455,6 @@ local function GetOptions()
 		set = function(info, val) db[info[#info]] = val end,
 		get = function(info) return db[info[#info]] end,
 		args = {
-			specific_queue = {
-				type = "select",
-				name = "Dungeons",
-				desc = "Only queue for dungeons in this category.",
-				values = dungeons,
-				width = "double",
-				order = 0.5,
-			},
 			icon = {
 				type = "toggle",
 				name = "Enable status icon",
@@ -509,6 +506,28 @@ local function GetOptions()
 				end,
 				disabled = function() return not db.sound_enable end,
 				order = 6,
+			},
+			any_queue = {
+				type = "toggle",
+				name = "Queue for any dungeon",
+				desc = "Queue for any available dungeon with a satchel reward.",
+				width = "full",
+				order = 7,
+			},
+			specific_dungeons = {
+				type = "multiselect",
+				name = "Dungeons",
+				desc = "Only queue for dungeons in this category.",
+				get = function(info, key)
+					return db.specific_dungeons[key]
+				end,
+				set = function(info, key, val)
+					db.specific_dungeons[key] = val
+				end,
+				values = dungeons,
+				hidden = function() return db.any_queue end,
+				width = "double",
+				order = 8,
 			},
 		},
 	}
