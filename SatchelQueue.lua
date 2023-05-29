@@ -1,12 +1,6 @@
 local SatchelQueue = LibStub("AceAddon-3.0"):NewAddon("SatchelQueue", "AceEvent-3.0", "AceHook-3.0")
 _G.SatchelQueue = SatchelQueue -- debug
 
-local soundFile = "Sound\\Spells\\Clearcasting_Impact_Chest.wav"
-local media = LibStub("LibSharedMedia-3.0", true)
-if media then
-	media:Register("sound", "SatchelQueue Alert", soundFile)
-end
-
 local db
 local defaults = {
 	profile = {
@@ -20,9 +14,15 @@ local defaults = {
 	}
 }
 
+local SOUND_FILE = [[Interface\AddOns\SatchelQueue\Clearcasting_Impact_Chest.ogg]]
 local SATCHELQUEUE = "SatchelQueue"
 local BUTTON_CANCEL = "Stop Looking"
 local TIME_WAITING = "Time Waiting: %s"
+
+local media = LibStub("LibSharedMedia-3.0", true)
+if media then
+	media:Register("sound", "SatchelQueue Alert", SOUND_FILE)
+end
 
 StaticPopupDialogs["SATCHEL_QUEUE"] = {
 	text = LFG_CALL_TO_ARMS,
@@ -374,7 +374,7 @@ do
 		if CheckQueuePopReward(dungeonID, role) then
 			if db.sound_enable then
 				SetSound()
-				PlaySoundFile(media and media:Fetch("sound", db.sound_file) or soundFile, "Master")
+				PlaySoundFile(media and media:Fetch("sound", db.sound_file) or SOUND_FILE, "Master")
 			end
 
 			if db.flash_enable then
@@ -531,6 +531,7 @@ function SatchelQueue:OnInitialize()
 	end
 	SLASH_SATCHELQUEUE1 = "/satchel"
 	SLASH_SATCHELQUEUE2 = "/satchelqueue"
+	SLASH_SATCHELQUEUE3 = "/sq"
 end
 
 function SatchelQueue:OnEnable()
